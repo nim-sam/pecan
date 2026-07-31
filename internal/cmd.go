@@ -1,4 +1,4 @@
-package command
+package internal
 
 import "os"
 
@@ -47,10 +47,23 @@ func (cmd *Command) Handler() HandlerFunction {
 	return cmd.handler
 }
 
-// Command Constructor
+func (cmd *Command) Path() []string {
+	temp := cmd
+	var cmd_names []string
 
-func NewCommand() *Command {
-	return &Command{}
+	for temp != nil {
+		cmd_names = append(cmd_names, temp.Name())
+		temp = temp.Parent()
+	}
+
+	// Reversing order of command parent traversal to obtain
+	// full command path
+	var out []string
+	for i := len(cmd_names); i >= 0; i-- {
+		out = append(out, cmd_names[i])
+	}
+
+	return out
 }
 
 // Command Setters
