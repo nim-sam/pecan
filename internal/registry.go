@@ -7,9 +7,9 @@ type Registry struct {
 }
 
 func NewRegistry() *Registry {
-	return &Registry{}
+	return &Registry{root : make(map[string]*Command)}
 }
 
 func (r *Registry) Register(cmd *Command) {
-
+	r.root[cmd.Path()] = cmd
 }

@@ -1,6 +1,9 @@
 package internal
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 // Handler function type
 type HandlerFunction func([]string) error
@@ -47,7 +50,7 @@ func (cmd *Command) Handler() HandlerFunction {
 	return cmd.handler
 }
 
-func (cmd *Command) Path() []string {
+func (cmd *Command) Path() string {
 	temp := cmd
 	var cmd_names []string
 
@@ -59,11 +62,11 @@ func (cmd *Command) Path() []string {
 	// Reversing order of command parent traversal to obtain
 	// full command path
 	var out []string
-	for i := len(cmd_names); i >= 0; i-- {
+	for i := len(cmd_names) - 1; i >= 0; i-- {
 		out = append(out, cmd_names[i])
 	}
 
-	return out
+	return strings.Join(out, " ")
 }
 
 // Command Setters

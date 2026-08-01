@@ -3,16 +3,14 @@ package main
 import "github.com/nim-sam/pecan"
 
 func main() {
-	println("test")
 
-	c := pecan.NewCommand().WithName("your mom")
+	c := pecan.NewCommand().WithName("FirstArg")
 
-	d := pecan.NewCommand().WithName("your dad").WithParent(c)
+	d := pecan.NewCommand().WithName("SecondArg").WithParent(c)
 
-	e := pecan.NewCommand().WithName("your sister").WithParent(d)
+	e := pecan.NewCommand().WithName("ThirdArg").WithParent(d)
 
-	path := pecan.ExtractCmdPath(e)
-	for i := 0; i < 3; i++ {
-		println(path[i])
-	}
+	path := e.Path()
+
+	println(path)
 }
