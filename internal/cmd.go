@@ -22,6 +22,9 @@ type Command struct {
 
 	// Handler method (method ran by the command)
 	handler HandlerFunction
+
+	// Command registry
+	registry *Registry
 }
 
 // Command Getters
@@ -98,11 +101,21 @@ func (cmd *Command) WithHandler(handler HandlerFunction) *Command {
 	return cmd
 }
 
+func (cmd *Command) WithRegistry(registry *Registry) *Command {
+	cmd.registry = registry
+	return cmd
+}
+
 // Command execution methods
 
-func (cmd *Command) Run() (*Command, error) {
+func (cmd *Command) Register() *Command {
+	cmd.registry.Register(cmd)
+	return cmd
+}
+
+func (cmd *Command) Run() error {
 	if err := cmd.handler(os.Args); err != nil {
-		return nil, err
+		return err
 	}
-	return cmd, nil
+	return nil
 }

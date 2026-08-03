@@ -16,6 +16,16 @@ func init() {
 
 func NewCommand() *internal.Command {
 	new_cmd := &internal.Command{}
-	r.Register(new_cmd)
+	new_cmd.WithRegistry(r)
 	return new_cmd
+}
+
+// Application Constructor
+
+func App(name string) *internal.App {
+	a := &internal.App{
+		Name:     name,
+		Registry: r,
+	}
+	return a
 }
