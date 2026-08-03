@@ -7,10 +7,15 @@ type App struct {
 	Registry *Registry
 }
 
-func (a *App) Launch() error {
-	cmd := a.Registry.Find(os.Args[1:])
-	if err := cmd.Run(); err != nil {
-		return err
+func (a *App) Launch() (*Command, error) {
+	cmd, err := a.Registry.Find(os.Args[1:])
+
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+	return cmd, nil
 }

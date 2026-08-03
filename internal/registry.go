@@ -1,6 +1,9 @@
 package internal
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 type Registry struct {
 	// Holds the dummy head of the command tree
@@ -16,7 +19,10 @@ func (r *Registry) Register(cmd *Command) {
 	r.root[cmd.Path()] = cmd
 }
 
-func (r *Registry) Find(args []string) *Command {
+func (r *Registry) Find(args []string) (*Command, error) {
 	cmd_key := strings.Join(args, " ")
-	return r.root[cmd_key]
+	if value, ok := r.root[cmd_key]; ok {
+		return value, nil
+	}
+	return nil, errors.New("Command not found")
 }
